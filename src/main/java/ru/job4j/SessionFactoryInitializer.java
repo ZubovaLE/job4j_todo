@@ -14,6 +14,10 @@ public class SessionFactoryInitializer implements AutoCloseable {
         sf = new MetadataSources(registry).buildMetadata().buildSessionFactory();
     }
 
+    public SessionFactory getSf() {
+        return sf;
+    }
+
     private static final class Lazy {
         private static final SessionFactoryInitializer INST = new SessionFactoryInitializer();
     }
