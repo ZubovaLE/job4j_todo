@@ -22,4 +22,12 @@
         <servlet-name>EditServlet</servlet-name>
         <url-pattern>/edit.do</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <servlet-name>DescriptionServlet</servlet-name>
+        <servlet-class>ru.job4j.controller.DescriptionServlet</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DescriptionServlet</servlet-name>
+        <url-pattern>/description.do</url-pattern>
+    </servlet-mapping>
 </web-app>

@@ -16,11 +16,6 @@ public class EditServlet extends HttpServlet {
     private final Service<Item> toDoService = ToDoService.instOf();
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String description = req.getParameter("description");

@@ -29,12 +29,26 @@
                 pageHeader = 'Создать задание';
             } else {
                 pageHeader = 'Редактировать задание';
+                getItemInfo();
             }
             $('#pageHeader h3:last').append(pageHeader);
         })
 
+        function getItemInfo() {
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8080/todo/description.do',
+                dataType: 'json'
+            }).done(function (data) {
+                $('#name').value = data.name;
+                $('#description').value = data.description;
+            }).fail(function (err) {
+                console.log(err);
+            });
+        }
+
         function validate() {
-            if ($('#itemName').val() === '' || $('#description').val() === '') {
+            if ($('#name').val() === '' || $('#description').val() === '') {
                 alert('Заполните все поля!');
                 return false;
             }
@@ -43,12 +57,13 @@
         }
 
         function createItem() {
+            dataString = $("#itemInfo").serialize();
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8080/todo/edit.do?name=' + $('#itemName'),
-                dataType: 'json'
-            }).done(function (data) {
-                window.location.href = 'http://localhost:8080/todo/index.do';
+                url: 'http://localhost:8080/todo/edit.do',
+                data: dataString
+            }).done(function () {
+                window.location.href = '/todo/index.html';
             }).fail(function (err) {
                 console.log(err);
             });
@@ -62,15 +77,17 @@
     <div class="row pt-3" id="pageHeader">
         <h3></h3>
     </div>
-    <div class="form-group">
-        <label for="itemName">Имя</label>
-        <input type="text" class="form-control" id="itemName" placeholder="Введите имя"/>
-    </div>
-    <div class="form-group">
-        <label for="description">Описание</label>
-        <input type="text" class="form-control" id="description" placeholder="Опишите задание"/>
-    </div>
-    <button type="submit" class="btn btn-primary" onclick="return validate()">Создать</button>
+    <form id="itemInfo">
+        <div class="form-group">
+            <label for="name">Имя</label>
+            <input type="text" class="form-control" id="name" name="name" placeholder="Введите имя"/>
+        </div>
+        <div class="form-group">
+            <label for="description">Описание</label>
+            <input type="text" class="form-control" id="description" name="description" placeholder="Опишите задание"/>
+        </div>
+        <button type="submit" class="btn btn-primary" onclick="return validate()">Создать</button>
+    </form>
 </div>
 </body>
 </html>

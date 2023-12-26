@@ -29,7 +29,8 @@
                 dataType: 'json'
             }).done(function (data) {
                 for (var item of data) {
-                    $('#items tr:last').append('<td>{item.name}</td>' + '<td>{item.created}</td>' + '<td>{item.done}</td>');
+                    $('#items tr:last').after('<tr><td><a href=' + '/todo/item/description.html?id=' + item.id + '>' + item.name + '</a></td><td>' + 111
+                        + '</td><td>' + item.done + '</td></tr>');
                 }
             }).fail(function (err) {
                 console.log(err);
@@ -39,6 +40,7 @@
         function addItem() {
             window.location.href = '/todo/item/edit.html?id=0';
         }
+
     </script>
     <title>Items</title>
 </head>
@@ -49,9 +51,11 @@
             <h3>Задания</h3>
         </div>
         <thead>
-        <th>Имя</th>
-        <th>Дата создания</th>
-        <th>Состояние</th>
+        <tr>
+            <th>Имя</th>
+            <th>Дата создания</th>
+            <th>Состояние</th>
+        </tr>
         </thead>
         <tbody>
         </tbody>
