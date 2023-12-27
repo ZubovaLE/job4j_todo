@@ -30,8 +30,7 @@
                 dataType: 'json'
             }).done(function (data) {
                 $('#pageHeader h3:last').append(data.name);
-                $('#description h4:last').after('<input type="text" id="description" name="description" value=' +
-                    data.description + ' disabled/>');
+                $('#description h4:last').after('<p class="card-text">' + data.description + '</p>');
             }).fail(function (err) {
                 console.log(err);
             });
@@ -41,10 +40,9 @@
             var id = window.location.href.split("=")[1];
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8080/todo/description.do',
-                data: id
+                url: 'http://localhost:8080/todo/description.do?id=' + id
             }).done(function () {
-                window.location.href = '/todo/index.html';
+                window.location.href = 'http://localhost:8080/todo/index.html';
             }).fail(function (err) {
                 console.log(err);
             });
@@ -56,23 +54,40 @@
         }
 
         function deleteItem() {
-
+            var id = window.location.href.split("=")[1];
+            $.ajax({
+                type: 'POST',
+                url: 'http://localhost:8080/todo/description.do?id=' + id + '&delete=true'
+            }).done(function () {
+                window.location.href = 'http://localhost:8080/todo/index.html';
+            }).fail(function (err) {
+                console.log(err);
+            });
         }
 
     </script>
     <title>Description</title>
 </head>
 <body>
-<div class="container">
-    <div class="card" id="pageHeader" style="text-align: center">
+<div class="card">
+    <div class="card-header" id="pageHeader" style="text-align: center">
         <h3></h3>
     </div>
     <div class="card-body" id="description">
-        <h4>Описание</h4>
+        <h4 class="card-title">Описание</h4>
     </div>
-    <button type="button" class="btn btn-success" onclick="setItemDone()">Выполнено</button>
-    <button type="button" class="btn btn-primary" onclick="editItem()">Отредактировать</button>
-    <button type="button" class="btn btn-danger" onclick="deleteItem()">Удалить</button>
+    <div class="card-body" id="buttons">
+        <h4 class="card-title">Действия</h4>
+        <button type="button" class="btn btn-success" title="Отметить задание выполненным"
+                onclick="return setItemDone()">
+            Выполнено
+        </button>
+        <button type="button" class="btn btn-primary" title="Отредактировать задание" onclick="return editItem()">
+            Отредактировать
+        </button>
+        <button type="button" class="btn btn-danger" title="Удалить задание" onclick="return deleteItem()">Удалить
+        </button>
+    </div>
 </div>
 </body>
 </html>

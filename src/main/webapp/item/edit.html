@@ -25,45 +25,47 @@
         $(document).ready(function () {
             var id = window.location.href.split("=")[1];
             var pageHeader;
+            var buttonLabel;
             if (parseInt(id) === 0) {
                 pageHeader = 'Создать задание';
+                buttonLabel = "Создать";
             } else {
                 pageHeader = 'Редактировать задание';
-                getItemInfo();
+                buttonLabel = "Редактировать";
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:8080/todo/description.do?id=' + id,
+                    dataType: 'json'
+                }).done(function (data) {
+                    $('#name').val(data.name);
+                    $('#description').val(data.description);
+                }).fail(function (err) {
+                    console.log(err);
+                });
             }
             $('#pageHeader h3:last').append(pageHeader);
+            $('#itemInfo div:last').after('<button type="submit" class="btn btn-primary" onclick="validate()">' +
+                buttonLabel + '</button>');
         })
-
-        function getItemInfo() {
-            $.ajax({
-                type: 'GET',
-                url: 'http://localhost:8080/todo/description.do',
-                dataType: 'json'
-            }).done(function (data) {
-                $('#name').value = data.name;
-                $('#description').value = data.description;
-            }).fail(function (err) {
-                console.log(err);
-            });
-        }
 
         function validate() {
             if ($('#name').val() === '' || $('#description').val() === '') {
                 alert('Заполните все поля!');
                 return false;
             }
-            createItem();
+            createOrUpdateItem();
             return true;
         }
 
-        function createItem() {
+        function createOrUpdateItem() {
+            var id = window.location.href.split("=")[1];
             dataString = $("#itemInfo").serialize();
             $.ajax({
                 type: 'POST',
-                url: 'http://localhost:8080/todo/edit.do',
+                url: 'http://localhost:8080/todo/edit.do?id=' + id,
                 data: dataString
             }).done(function () {
-                window.location.href = '/todo/index.html';
+                window.location.href = 'http://localhost:8080/todo/index.html';
             }).fail(function (err) {
                 console.log(err);
             });
@@ -80,13 +82,13 @@
     <form id="itemInfo">
         <div class="form-group">
             <label for="name">Имя</label>
-            <input type="text" class="form-control" id="name" name="name" placeholder="Введите имя"/>
+            <input type="text" class="form-control" id="name" name="name" value="" placeholder="Введите имя"/>
         </div>
         <div class="form-group">
             <label for="description">Описание</label>
-            <input type="text" class="form-control" id="description" name="description" placeholder="Опишите задание"/>
+            <input type="text" class="form-control" id="description" name="description" value=""
+                   placeholder="Опишите задание"/>
         </div>
-        <button type="submit" class="btn btn-primary" onclick="return validate()">Создать</button>
     </form>
 </div>
 </body>

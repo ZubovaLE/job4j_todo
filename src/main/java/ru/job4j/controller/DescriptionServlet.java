@@ -29,7 +29,11 @@ public class DescriptionServlet extends HttpServlet {
         resp.setContentType("application/json; charset=utf-8");
         int id = Integer.parseInt(req.getParameter("id"));
         Item item = toDoService.findById(id);
-        item.setDone(true);
-        toDoService.update(id, item);
+        if (req.getParameter("delete") != null) {
+            toDoService.delete(id);
+        } else {
+            item.setDone(true);
+            toDoService.update(id, item);
+        }
     }
 }

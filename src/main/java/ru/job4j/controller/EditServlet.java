@@ -1,6 +1,5 @@
 package ru.job4j.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.job4j.model.Item;
 import ru.job4j.service.Service;
 import ru.job4j.service.ToDoService;
@@ -19,6 +18,14 @@ public class EditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
-        toDoService.add(new Item(0, name, description, new Timestamp(System.currentTimeMillis()), false));
+        int id = Integer.parseInt(req.getParameter("id"));
+        if (id != 0) {
+            Item itemForUpdating = toDoService.findById(id);
+            itemForUpdating.setName(name);
+            itemForUpdating.setDescription(description);
+            toDoService.update(id, itemForUpdating);
+        } else {
+            toDoService.add(new Item(0, name, description, new Timestamp(System.currentTimeMillis()), false));
+        }
     }
 }
