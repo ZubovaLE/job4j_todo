@@ -26,7 +26,6 @@ public class DescriptionServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setContentType("application/json; charset=utf-8");
         int id = Integer.parseInt(req.getParameter("id"));
         Item item = toDoService.findById(id);
         if (req.getParameter("delete") != null) {

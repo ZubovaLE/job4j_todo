@@ -39,10 +39,10 @@
         function setItemDone() {
             var id = window.location.href.split("=")[1];
             $.ajax({
-                type: 'POST',
+                method: 'POST',
                 url: 'http://localhost:8080/todo/description.do?id=' + id
             }).done(function () {
-                window.location.href = 'http://localhost:8080/todo/index.html';
+                window.location.replace('/todo/?items=all');
             }).fail(function (err) {
                 console.log(err);
             });
@@ -59,7 +59,7 @@
                 type: 'POST',
                 url: 'http://localhost:8080/todo/description.do?id=' + id + '&delete=true'
             }).done(function () {
-                window.location.href = 'http://localhost:8080/todo/index.html';
+                window.location.replace('/todo/?items=all');
             }).fail(function (err) {
                 console.log(err);
             });
@@ -79,13 +79,13 @@
     <div class="card-body" id="buttons">
         <h4 class="card-title">Действия</h4>
         <button type="button" class="btn btn-success" title="Отметить задание выполненным"
-                onclick="return setItemDone()">
+                onclick="setItemDone()">
             Выполнено
         </button>
-        <button type="button" class="btn btn-primary" title="Отредактировать задание" onclick="return editItem()">
+        <button type="button" class="btn btn-primary" title="Отредактировать задание" onclick="editItem()">
             Отредактировать
         </button>
-        <button type="button" class="btn btn-danger" title="Удалить задание" onclick="return deleteItem()">Удалить
+        <button type="button" class="btn btn-danger" title="Удалить задание" onclick="deleteItem()">Удалить
         </button>
     </div>
 </div>

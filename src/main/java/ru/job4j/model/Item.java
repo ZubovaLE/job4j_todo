@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Objects;
 
 @AllArgsConstructor
@@ -39,6 +40,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return String.format("Item: id=%d, description=%s, created=%s, done=%s", id, description, created, done);
+        return String.format("Item: id=%d, description=%s, created=%s, done=%s", id, description,
+                new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(created), done);
     }
 }

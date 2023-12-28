@@ -54,18 +54,18 @@
                 return false;
             }
             createOrUpdateItem();
-            return true;
         }
 
         function createOrUpdateItem() {
             var id = window.location.href.split("=")[1];
-            dataString = $("#itemInfo").serialize();
+            var dataString = $("#itemInfo").serialize();
             $.ajax({
                 type: 'POST',
                 url: 'http://localhost:8080/todo/edit.do?id=' + id,
-                data: dataString
+                data: dataString,
+                dataType: 'json'
             }).done(function () {
-                window.location.href = 'http://localhost:8080/todo/index.html';
+                window.location.replace('/todo/?items=all');
             }).fail(function (err) {
                 console.log(err);
             });

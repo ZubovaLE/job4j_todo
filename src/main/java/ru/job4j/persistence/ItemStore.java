@@ -43,6 +43,24 @@ public class ItemStore implements Store<Item> {
         return result;
     }
 
+    public List<Item> findNewItems() {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        List<Item> result = session.createQuery("from Item where created >= date_trunc('DAY', current_date)").list();
+        session.getTransaction().commit();
+        session.close();
+        return result;
+    }
+
+    public List<Item> findCompletedItems() {
+        Session session = sf.openSession();
+        session.beginTransaction();
+        List<Item> result = session.createQuery("from Item where done = true").list();
+        session.getTransaction().commit();
+        session.close();
+        return result;
+    }
+
     @Override
     public Item findById(int id) {
         Session session = sf.openSession();

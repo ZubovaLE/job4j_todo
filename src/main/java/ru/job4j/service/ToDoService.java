@@ -3,18 +3,17 @@ package ru.job4j.service;
 import ru.job4j.SessionFactoryInitializer;
 import ru.job4j.model.Item;
 import ru.job4j.persistence.ItemStore;
-import ru.job4j.persistence.Store;
 
 import java.util.List;
 
 public class ToDoService implements Service<Item> {
-    private final Store<Item> itemStore = new ItemStore(SessionFactoryInitializer.instOf().getSf());
+    private final ItemStore itemStore = new ItemStore(SessionFactoryInitializer.instOf().getSf());
 
     private static final class Lazy {
-        private static final Service<Item> INST = new ToDoService();
+        private static final ToDoService INST = new ToDoService();
     }
 
-    public static Service<Item> instOf() {
+    public static ToDoService instOf() {
         return ToDoService.Lazy.INST;
     }
 
@@ -25,7 +24,15 @@ public class ToDoService implements Service<Item> {
 
     @Override
     public List<Item> findAll() {
-        return (List<Item>) itemStore.findAll();
+        return itemStore.findAll();
+    }
+
+    public List<Item> findNewItems() {
+        return itemStore.findNewItems();
+    }
+
+    public List<Item> findCompletedItems() {
+        return itemStore.findCompletedItems();
     }
 
     @Override
