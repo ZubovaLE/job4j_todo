@@ -29,8 +29,11 @@
                 url: 'http://localhost:8080/todo/description.do?id=' + id,
                 dataType: 'json'
             }).done(function (data) {
+                var done = data.done ? 'Выполнено' : 'Не выполнено';
                 $('#pageHeader h3:last').append(data.name);
                 $('#description h4:last').after('<p class="card-text">' + data.description + '</p>');
+                $('#status h4:last').after('<p class="card-text">' + done + '</p>');
+                $('#created h4:last').after('<p class="card-text">' + data.created + '</p>');
             }).fail(function (err) {
                 console.log(err);
             });
@@ -42,7 +45,7 @@
                 method: 'POST',
                 url: 'http://localhost:8080/todo/description.do?id=' + id
             }).done(function () {
-                window.location.replace('/todo/?items=all');
+                $('#status p:last').replaceWith('<p class="card-text">' + 'Выполнено' + '</p>');
             }).fail(function (err) {
                 console.log(err);
             });
@@ -76,9 +79,15 @@
     <div class="card-body" id="description">
         <h4 class="card-title">Описание</h4>
     </div>
+    <div class="card-body" id="status">
+        <h4 class="card-title">Состояние</h4>
+    </div>
+    <div class="card-body" id="created">
+        <h4 class="card-title">Дата создания</h4>
+    </div>
     <div class="card-body" id="buttons">
         <h4 class="card-title">Действия</h4>
-        <button type="button" class="btn btn-success" title="Отметить задание выполненным"
+        <button type="button" class="btn btn-success" id="doneButton" title="Отметить задание выполненным"
                 onclick="setItemDone()">
             Выполнено
         </button>
@@ -90,4 +99,11 @@
     </div>
 </div>
 </body>
+<footer>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a href="/todo/?items=all">На главную страницу</a>
+        </li>
+    </ul>
+</footer>
 </html>

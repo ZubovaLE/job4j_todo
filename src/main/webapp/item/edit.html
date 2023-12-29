@@ -58,14 +58,12 @@
 
         function createOrUpdateItem() {
             var id = window.location.href.split("=")[1];
-            var dataString = $("#itemInfo").serialize();
             $.ajax({
                 type: 'POST',
                 url: 'http://localhost:8080/todo/edit.do?id=' + id,
-                data: dataString,
-                dataType: 'json'
+                data: $("#itemInfo").serialize()
             }).done(function () {
-                window.location.replace('/todo/?items=all');
+                window.location.href = "/todo/?items=all";
             }).fail(function (err) {
                 console.log(err);
             });
@@ -92,4 +90,11 @@
     </form>
 </div>
 </body>
+<footer>
+    <ul class="nav justify-content-center">
+        <li class="nav-item">
+            <a href="/todo/?items=all">На главную страницу</a>
+        </li>
+    </ul>
+</footer>
 </html>

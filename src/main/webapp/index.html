@@ -29,6 +29,19 @@
                 url: 'http://localhost:8080/todo/index.do?items=' + items,
                 dataType: 'json'
             }).done(function (data) {
+                if (items === 'done') {
+                    $('#done a:last').replaceWith('<a class="nav-link active" href="/todo/?items=done">Выполненные</a>');
+                    $('#all a:last').replaceWith('<a class="nav-link" href="/todo/?items=all">Все</a>');
+                    $('#new a:last').replaceWith('<a class="nav-link" href="/todo/?items=new">Новые</a>');
+                } else if (items === 'new') {
+                    $('#new a:last').replaceWith('<a class="nav-link active" href="/todo/?items=new">Новые</a>');
+                    $('#all a:last').replaceWith('<a class="nav-link" href="/todo/?items=all">Все</a>');
+                    $('#done a:last').replaceWith('<a class="nav-link" href="/todo/?items=done">Выполненные</a>');
+                } else {
+                    $('#all a:last').replaceWith('<a class="nav-link active" href="/todo/?items=all">Все</a>');
+                    $('#new a:last').replaceWith('<a class="nav-link" href="/todo/?items=new">Новые</a>');
+                    $('#done a:last').replaceWith('<a class="nav-link" href="/todo/?items=done">Выполненные</a>');
+                }
                 var done;
                 for (var item of data) {
                     done = item.done ? 'Выполнено' : 'Не выполнено';
@@ -50,14 +63,14 @@
 <body>
 <div class="container">
     <div class="row">
-        <ul class="nav">
-            <li class="nav-item">
+        <ul class="nav nav-tabs">
+            <li class="nav-item" id="all">
                 <a class="nav-link" href="/todo/?items=all">Все</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="done">
                 <a class="nav-link" href="/todo/?items=done">Выполненные</a>
             </li>
-            <li class="nav-item">
+            <li class="nav-item" id="new">
                 <a class="nav-link" href="/todo/?items=new">Новые</a>
             </li>
         </ul>
