@@ -57,9 +57,7 @@ public class ItemStore implements Store<Item> {
     @Override
     public Item findById(int id) {
         return this.tx(
-                session -> (Item) session.createQuery("from Item where id = :iid")
-                        .setParameter("iid", id)
-                        .uniqueResult()
+                session -> session.get(Item.class, id)
         );
     }
 
