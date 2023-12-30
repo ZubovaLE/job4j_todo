@@ -30,9 +30,4 @@ public class IndexServlet extends HttpServlet {
         String jsonFromItems = objectMapper.writeValueAsString(items);
         resp.getWriter().write(jsonFromItems);
     }
-
-    @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
-    }
 }

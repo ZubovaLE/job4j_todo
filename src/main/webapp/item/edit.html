@@ -44,7 +44,7 @@
                 });
             }
             $('#pageHeader h3:last').append(pageHeader);
-            $('#itemInfo div:last').after('<button type="submit" class="btn btn-primary" onclick="validate()">' +
+            $('#itemInfo div:last').after('<button type="submit" class="btn btn-primary" onclick="return validate()">' +
                 buttonLabel + '</button>');
         })
 
@@ -52,8 +52,10 @@
             if ($('#name').val() === '' || $('#description').val() === '') {
                 alert('Заполните все поля!');
                 return false;
+            } else {
+                createOrUpdateItem();
+                return true;
             }
-            createOrUpdateItem();
         }
 
         function createOrUpdateItem() {
@@ -61,9 +63,9 @@
             $.ajax({
                 type: 'POST',
                 url: 'http://localhost:8080/todo/edit.do?id=' + id,
-                data: $("#itemInfo").serialize()
+                data: $('#itemInfo').serialize()
             }).done(function () {
-                window.location.href = "/todo/?items=all";
+                window.location.replace('/todo/?items=all');
             }).fail(function (err) {
                 console.log(err);
             });

@@ -18,7 +18,10 @@ public class ItemStore implements Store<Item> {
     @Override
     public Item add(Item item) {
         return this.tx(
-                session -> (Item) session.save(item)
+                session -> {
+                    session.save(item);
+                    return item;
+                }
         );
     }
 
