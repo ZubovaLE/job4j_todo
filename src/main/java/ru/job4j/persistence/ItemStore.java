@@ -2,9 +2,11 @@ package ru.job4j.persistence;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import ru.job4j.model.Item;
 
 import java.util.List;
+import java.util.function.Function;
 
 public class ItemStore implements Store<Item> {
     private final SessionFactory sf;
@@ -15,12 +17,9 @@ public class ItemStore implements Store<Item> {
 
     @Override
     public Item add(Item item) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        session.save(item);
-        session.getTransaction().commit();
-        session.close();
-        return item;
+        return this.tx(
+                session -> (Item) session.save(item)
+        );
     }
 
     @Override
@@ -35,42 +34,30 @@ public class ItemStore implements Store<Item> {
 
     @Override
     public List<Item> findAll() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<Item> result = session.createQuery("from Item").list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return this.tx(
+                session -> session.createQuery("from Item ").list()
+        );
     }
 
     public List<Item> findNewItems() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<Item> result = session.createQuery("from Item where created >= date_trunc('DAY', current_date)").list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return this.tx(
+                session -> session.createQuery("from Item where created >= date_trunc('DAY', current_date)").list()
+        );
     }
 
     public List<Item> findCompletedItems() {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        List<Item> result = session.createQuery("from Item where done = true").list();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return this.tx(
+                session -> session.createQuery("from Item where done = true").list()
+        );
     }
 
     @Override
     public Item findById(int id) {
-        Session session = sf.openSession();
-        session.beginTransaction();
-        Item result = (Item) session.createQuery("from Item where id = :iid")
-                .setParameter("iid", id)
-                .uniqueResult();
-        session.getTransaction().commit();
-        session.close();
-        return result;
+        return this.tx(
+                session -> (Item) session.createQuery("from Item where id = :iid")
+                        .setParameter("iid", id)
+                        .uniqueResult()
+        );
     }
 
     @Override
@@ -82,5 +69,20 @@ public class ItemStore implements Store<Item> {
         session.delete(removableItem);
         session.getTransaction().commit();
         session.close();
+    }
+
+    private <T> T tx(final Function<Session, T> command) {
+        final Session session = sf.openSession();
+        final Transaction tx = session.beginTransaction();
+        try {
+            T rsl = command.apply(session);
+            tx.commit();
+            return rsl;
+        } catch (final Exception e) {
+            session.getTransaction().rollback();
+            throw e;
+        } finally {
+            session.close();
+        }
     }
 }
