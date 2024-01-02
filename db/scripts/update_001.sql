@@ -6,3 +6,12 @@ CREATE TABLE IF NOT EXISTS items
     created     TIMESTAMP,
     done        BOOLEAN
 );
+
+CREATE TABLE IF NOT EXISTS users
+(
+    id       SERIAL PRIMARY KEY,
+    name     TEXT,
+    email    TEXT,
+    password TEXT,
+    item_id  INTEGER REFERENCES items (id)
+);
