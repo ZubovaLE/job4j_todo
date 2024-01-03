@@ -21,6 +21,25 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        $.ajax({
+            url: 'http://localhost:8080/todo/registration.do',         /* Куда пойдет запрос */
+            method: 'post',             /* Метод передачи (post или get) */
+            dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
+            data: $('userInfo').serialize(),     /* Параметры передаваемые в запросе. */
+            success: [function (data) {   /* функция которая будет выполнена после успешного запроса.  */
+                window.location.href = 'registration.html?name=' + data.name        /* В переменной data содержится ответ от index.php. */
+            }]
+        });
+
+        function validate() {
+            if ($('#email').val() === '' || $('#password').val() === '' || $('#name').val() === '') {
+                alert("Необходимо заполнить все поля");
+                return false;
+            }
+            return true;
+        }
+    </script>
     <title>Registration</title>
 </head>
 <body>
@@ -32,17 +51,18 @@
         <div class="card-body">
             <form id="userInfo">
                 <div class="form-group">
-                    <label for="name">Имя пользователя</label>
+                    <label for="name" style="width: 60px">Имя</label>
                     <input type="text" id="name" name="name" placeholder="Имя пользователя"/>
                 </div>
                 <div class="form-group">
-                    <label for="email">Почта</label>
+                    <label for="email" style="width: 60px">Почта</label>
                     <input type="email" id="email" name="email" placeholder="example@mail.ru"/>
                 </div>
                 <div class="form-group">
-                    <label for="password">Пароль</label>
+                    <label for="password" style="width: 60px">Пароль</label>
                     <input type="password" id="password" name="password" placeholder="Пароль"/>
                 </div>
+                <button type="submit" class="btn btn-primary" onclick="return validate();">Зарегистрироваться</button>
             </form>
         </div>
     </div>
