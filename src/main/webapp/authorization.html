@@ -21,6 +21,32 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script>
+        function validate() {
+            if ($('#email').val() === '' || $('#password').val() === '') {
+                alert("Необходимо заполнить все поля");
+                return false;
+            }
+            enter();
+            return true;
+        }
+
+        function enter() {
+            $.ajax({
+                url: 'http://localhost:8080/todo/authorization.do',
+                method: 'post',
+                dataType: 'json',
+                data: $('userInfo').serialize(),
+                success: [function (data) {
+                    window.location.href = '/todo/?items=all';
+                }],
+                error: [function () {
+                    alert("Пользователь с таким email уже существует!");
+                    return false;
+                }]
+            });
+        }
+    </script>
     <title>Authorization</title>
 </head>
 <body>
@@ -30,7 +56,7 @@
             <h4>Авторизация</h4>
         </div>
         <div class="card-body">
-            <form id="userInfo">
+            <form id="userInfo" style="text-align: center">
                 <div class="form-group">
                     <label for="email" style="width: 60px">Почта</label>
                     <input type="email" id="email" name="email" placeholder="example@mail.ru"/>

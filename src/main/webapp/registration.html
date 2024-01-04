@@ -22,22 +22,29 @@
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script>
-        $.ajax({
-            url: 'http://localhost:8080/todo/registration.do',         /* Куда пойдет запрос */
-            method: 'post',             /* Метод передачи (post или get) */
-            dataType: 'json',          /* Тип данных в ответе (xml, json, script, html). */
-            data: $('userInfo').serialize(),     /* Параметры передаваемые в запросе. */
-            success: [function (data) {   /* функция которая будет выполнена после успешного запроса.  */
-                window.location.href = 'registration.html?name=' + data.name        /* В переменной data содержится ответ от index.php. */
-            }]
-        });
-
         function validate() {
             if ($('#email').val() === '' || $('#password').val() === '' || $('#name').val() === '') {
                 alert("Необходимо заполнить все поля");
                 return false;
             }
+            createUser();
             return true;
+        }
+
+        function createUser() {
+            $.ajax({
+                url: 'http://localhost:8080/todo/registration.do',
+                method: 'post',
+                dataType: 'json',
+                data: $('userInfo').serialize(),
+                success: [function (data) {
+                    window.location.href = 'successfulRegistration.html?name=' + data.name;
+                }],
+                error: [function () {
+                    alert("Пользователь с таким email уже существует!");
+                    return false;
+                }]
+            });
         }
     </script>
     <title>Registration</title>
