@@ -28,17 +28,17 @@
                 return false;
             }
             createUser();
-            return true;
         }
 
         function createUser() {
             $.ajax({
-                url: 'http://localhost:8080/todo/registration.do',
+                url: 'http://localhost:8080/todo/registration',
                 method: 'post',
                 dataType: 'json',
-                data: $('userInfo').serialize(),
+                data: $('#userInfo').serialize(),
                 success: [function (data) {
                     window.location.href = 'successfulRegistration.html?name=' + data.name;
+                    return true;
                 }],
                 error: [function () {
                     alert("Пользователь с таким email уже существует!");

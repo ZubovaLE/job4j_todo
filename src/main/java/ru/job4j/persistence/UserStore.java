@@ -1,5 +1,6 @@
 package ru.job4j.persistence;
 
+import com.sun.istack.Nullable;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import ru.job4j.model.User;
@@ -38,6 +39,7 @@ public class UserStore extends AbstractStore<User> {
         );
     }
 
+    @Nullable
     @Override
     public User findById(int id) {
         return tx(
@@ -45,6 +47,7 @@ public class UserStore extends AbstractStore<User> {
         );
     }
 
+    @Nullable
     public User findByEmail(String email) {
         return (User) tx(
                 session -> session.createQuery("from User where email = :email")

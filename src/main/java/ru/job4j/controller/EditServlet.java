@@ -25,7 +25,7 @@ public class EditServlet extends HttpServlet {
             itemForUpdating.setDescription(description);
             toDoService.update(id, itemForUpdating);
         } else {
-            toDoService.add(new Item(0, name, description, new Timestamp(System.currentTimeMillis()), false));
+            toDoService.add(new Item(0, name, description, "author", new Timestamp(System.currentTimeMillis()), false));
         }
     }
 }
