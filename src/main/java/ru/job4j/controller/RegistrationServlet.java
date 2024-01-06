@@ -1,5 +1,6 @@
 package ru.job4j.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import ru.job4j.model.User;
 import ru.job4j.service.UserService;
 
@@ -14,6 +15,7 @@ public class RegistrationServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setContentType("application/json; charset=utf-8");
         String email = req.getParameter("email");
         if (userService.findByEmail(email) != null) {
             resp.sendError(HttpServletResponse.SC_CONFLICT, "user already exists");
@@ -23,7 +25,9 @@ public class RegistrationServlet extends HttpServlet {
             user.setEmail(email);
             user.setPassword(req.getParameter("password"));
             user = userService.add(user);
-            resp.getWriter().write(user.getName());
+            ObjectMapper mapper = new ObjectMapper();
+            String jsonFromUser = mapper.writeValueAsString(user);
+            resp.getWriter().write(jsonFromUser);
         }
     }
 }

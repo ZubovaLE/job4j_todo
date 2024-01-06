@@ -28,17 +28,16 @@
                 return false;
             }
             enter();
-            return true;
         }
 
         function enter() {
             $.ajax({
-                url: 'http://localhost:8080/todo/authorization.do',
+                url: 'http://localhost:8080/todo/authorization',
                 method: 'post',
                 dataType: 'json',
-                data: $('userInfo').serialize(),
-                success: [function (data) {
-                    window.location.href = '/todo/?items=all';
+                data: $('#userInfo').serialize(),
+                success: [function () {
+                    window.location.href = 'http://localhost:8080/todo/?items=all';
                 }],
                 error: [function () {
                     alert("Неверный логин или пароль!");

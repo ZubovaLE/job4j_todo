@@ -50,8 +50,8 @@ public class UserStore extends AbstractStore<User> {
     @Nullable
     public User findByEmail(String email) {
         return (User) tx(
-                session -> session.createQuery("from User where email = :email")
-                        .setParameter("email", email)
+                session -> session.createQuery("from User where email = :uEmail")
+                        .setParameter("uEmail", email)
                         .uniqueResult()
         );
     }
