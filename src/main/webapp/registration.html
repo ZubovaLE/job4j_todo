@@ -37,7 +37,7 @@
                 dataType: 'json',
                 data: $('#userInfo').serialize(),
                 success: [function (data) {
-                    window.location.href = 'http://localhost:8080/todo/successfulRegistration.html?name=' + data.name;
+                    window.location.href = '/todo/successfulRegistration.html?name=' + data.name;
                 }],
                 error: [function () {
                     alert("Пользователь с таким email уже существует!");

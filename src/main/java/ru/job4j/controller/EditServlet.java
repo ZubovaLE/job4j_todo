@@ -1,6 +1,7 @@
 package ru.job4j.controller;
 
 import ru.job4j.model.Item;
+import ru.job4j.model.User;
 import ru.job4j.service.Service;
 import ru.job4j.service.ToDoService;
 
@@ -25,7 +26,8 @@ public class EditServlet extends HttpServlet {
             itemForUpdating.setDescription(description);
             toDoService.update(id, itemForUpdating);
         } else {
-            toDoService.add(new Item(0, name, description, "author", new Timestamp(System.currentTimeMillis()), false));
+            User author = (User) req.getSession().getAttribute("user");
+            toDoService.add(new Item(0, name, description, author.getName(), new Timestamp(System.currentTimeMillis()), false));
         }
     }
 }

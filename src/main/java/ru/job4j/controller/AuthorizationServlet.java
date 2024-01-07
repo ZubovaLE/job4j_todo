@@ -18,7 +18,7 @@ public class AuthorizationServlet extends HttpServlet {
         User user = userService.findByEmail(req.getParameter("email"));
         if (user != null && user.getPassword().equals(req.getParameter("password"))) {
             HttpSession sc = req.getSession();
-            sc.setAttribute(String.valueOf(user.getId()), user);
+            sc.setAttribute("user", user);
             resp.setStatus(HttpServletResponse.SC_OK);
         } else {
             resp.sendError(422, "Invalid username or password");
