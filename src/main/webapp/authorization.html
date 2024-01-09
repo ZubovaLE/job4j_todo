@@ -28,20 +28,19 @@
                 return false;
             }
             enter();
+            return true;
         }
 
         function enter() {
             $.ajax({
-                url: 'http://localhost:8080/todo/authorization',
+                url: 'http://localhost:8080/todo/authorization.do',
                 method: 'post',
-                dataType: 'json',
                 data: $('#userInfo').serialize(),
                 success: [function () {
-                    window.location.href = '/todo/?items=all';
+                    window.location.replace('http://localhost:8080/todo/?items=all');
                 }],
                 error: [function () {
                     alert("Неверный логин или пароль!");
-                    return false;
                 }]
             });
         }
@@ -64,8 +63,15 @@
                     <label for="password" style="width: 60px">Пароль</label>
                     <input type="password" id="password" name="password" placeholder="Пароль"/>
                 </div>
-                <button type="submit" class="btn btn-primary">Войти</button>
+                <button type="submit" class="btn btn-primary" onclick="return validate();">Войти</button>
             </form>
+            <div class="row">
+                <ul class="nav nav-tabs">
+                    <li class="nav-item">
+                        <a class="nav-link" href="/todo/registration.html">Зарегистрироваться</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
 </div>
