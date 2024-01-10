@@ -23,10 +23,15 @@ public class Item {
     private int id;
     private String name;
     private String description;
-    private String author;
+
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
     private Timestamp created;
+
     private boolean done;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @Override
     public boolean equals(Object o) {
@@ -43,7 +48,7 @@ public class Item {
 
     @Override
     public String toString() {
-        return String.format("Item: id=%d, description=%s, created=%s, done=%s, author=%s", id, description,
-                new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(created), done, author);
+        return String.format("Item: id=%d, description=%s, created=%s, done=%s, user=%s", id, description,
+                new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(created), done, user);
     }
 }

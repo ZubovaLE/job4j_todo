@@ -46,7 +46,8 @@
                 for (var item of data) {
                     done = item.done ? 'Выполнено' : 'Не выполнено';
                     $('#items tr:last').after('<tr><td><a href=' + '/todo/item/description.html?id=' + item.id + '>'
-                        + item.name + '</a></td><td>' + item.created + '</td><td>' + done + '</td><td>' + item.author + '</td></tr>');
+                        + item.name + '</a></td><td>' + item.created + '</td><td>' + done + '</td><td>' + item.user.name
+                        + '</td></tr>');
                 }
             }).fail(function (err) {
                 console.log(err);

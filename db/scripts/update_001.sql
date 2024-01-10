@@ -15,3 +15,13 @@ CREATE TABLE IF NOT EXISTS users
     password TEXT,
     item_id  INTEGER REFERENCES items (id)
 );
+
+ALTER TABLE users
+    ADD CONSTRAINT unique_email UNIQUE (email),
+    DROP COLUMN item_id;
+
+DELETE
+FROM items;
+
+ALTER TABLE items
+    ADD COLUMN user_id INTEGER NOT NULL REFERENCES users (id);

@@ -26,8 +26,8 @@ public class EditServlet extends HttpServlet {
             itemForUpdating.setDescription(description);
             toDoService.update(id, itemForUpdating);
         } else {
-            User author = (User) req.getSession().getAttribute("user");
-            toDoService.add(new Item(0, name, description, author.getName(), new Timestamp(System.currentTimeMillis()), false));
+            User user = (User) req.getSession().getAttribute("user");
+            toDoService.add(new Item(0, name, description, new Timestamp(System.currentTimeMillis()), false, user));
         }
     }
 }
