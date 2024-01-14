@@ -21,6 +21,7 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
     <script>
         $(document).ready(function () {
             var id = window.location.href.split("=")[1];
@@ -29,6 +30,18 @@
             if (parseInt(id) === 0) {
                 pageHeader = 'Создать задание';
                 buttonLabel = "Создать";
+                $.ajax({
+                    type: 'GET',
+                    url: 'http://localhost:8080/todo/category.do',
+                    dataType: 'json'
+                }).done(function (data) {
+                    for (var category of data) {
+                        var name = category.name;
+                        $('#category option:last').after('<option value=' + name + '>' + name + '</option>');
+                    }
+                }).fail(function (err) {
+                    console.log(err);
+                });
             } else {
                 pageHeader = 'Редактировать задание';
                 buttonLabel = "Редактировать";
@@ -59,6 +72,9 @@
         }
 
         function createOrUpdateItem() {
+            $('#category').multiselect({
+                includeSelectAllOption: true
+            });
             var id = window.location.href.split("=")[1];
             $.ajax({
                 type: 'POST',
@@ -88,6 +104,12 @@
             <label for="description">Описание</label>
             <input type="text" class="form-control" id="description" name="description" value=""
                    placeholder="Опишите задание"/>
+        </div>
+        <div>
+            <label>Категория</label>
+            <select id="category" name="category" multiple="multiple">
+                <option></option>
+            </select>
         </div>
     </form>
 </div>

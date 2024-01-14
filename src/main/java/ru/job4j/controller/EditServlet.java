@@ -1,7 +1,9 @@
 package ru.job4j.controller;
 
+import ru.job4j.model.Category;
 import ru.job4j.model.Item;
 import ru.job4j.model.User;
+import ru.job4j.service.CategoryService;
 import ru.job4j.service.Service;
 import ru.job4j.service.ToDoService;
 
@@ -19,6 +21,7 @@ public class EditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
+        var category = req.getParameter("category");
         int id = Integer.parseInt(req.getParameter("id"));
         if (id != 0) {
             Item itemForUpdating = toDoService.findById(id);

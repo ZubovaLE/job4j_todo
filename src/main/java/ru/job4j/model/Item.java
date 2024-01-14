@@ -9,7 +9,9 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -32,6 +34,18 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Set<Category> categories = new HashSet<>();
+
+    public Item(int id, String name, String description, Timestamp created, boolean done, User user) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.created = created;
+        this.done = done;
+        this.user = user;
+    }
 
     @Override
     public boolean equals(Object o) {
