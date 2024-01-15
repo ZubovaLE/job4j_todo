@@ -21,7 +21,6 @@ public class EditServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String name = req.getParameter("name");
         String description = req.getParameter("description");
-        var category = req.getParameter("category");
         int id = Integer.parseInt(req.getParameter("id"));
         if (id != 0) {
             Item itemForUpdating = toDoService.findById(id);
@@ -30,7 +29,9 @@ public class EditServlet extends HttpServlet {
             toDoService.update(id, itemForUpdating);
         } else {
             User user = (User) req.getSession().getAttribute("user");
-            toDoService.add(new Item(0, name, description, new Timestamp(System.currentTimeMillis()), false, user));
+            var categories = req.getParameter("categories");
+            Item item = new Item(0, name, description, new Timestamp(System.currentTimeMillis()), false, user);
+            toDoService.add(item);
         }
     }
 }

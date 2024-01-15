@@ -20,8 +20,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script type="text/javascript" src="js/bootstrap-multiselect.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/js/bootstrap-multiselect.min.js">
+    </script>
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/0.9.15/css/bootstrap-multiselect.css"/>
+
     <script>
         $(document).ready(function () {
             var id = window.location.href.split("=")[1];
@@ -37,8 +42,9 @@
                 }).done(function (data) {
                     for (var category of data) {
                         var name = category.name;
-                        $('#category option:last').after('<option value=' + name + '>' + name + '</option>');
+                        $('#category:last').append('<option value=' + name + '>' + name + '</option>');
                     }
+                    $('#category').multiselect();
                 }).fail(function (err) {
                     console.log(err);
                 });
@@ -72,9 +78,6 @@
         }
 
         function createOrUpdateItem() {
-            $('#category').multiselect({
-                includeSelectAllOption: true
-            });
             var id = window.location.href.split("=")[1];
             $.ajax({
                 type: 'POST',
@@ -105,10 +108,9 @@
             <input type="text" class="form-control" id="description" name="description" value=""
                    placeholder="Опишите задание"/>
         </div>
-        <div>
-            <label>Категория</label>
-            <select id="category" name="category" multiple="multiple">
-                <option></option>
+        <div class="form-group">
+            <label for="category">Категория</label>
+            <select id="category" name="categories" multiple="multiple">
             </select>
         </div>
     </form>
