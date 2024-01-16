@@ -30,10 +30,16 @@
                 dataType: 'json'
             }).done(function (data) {
                 var done = data.done ? 'Выполнено' : 'Не выполнено';
+                var category = '';
+                for (var c of data.categories) {
+                    category += c.name + '<br>';
+                }
                 $('#pageHeader h3:last').append(data.name);
+                $('#category h4:last').after('<p class="card-text">' + category + '</p>');
                 $('#description h4:last').after('<p class="card-text">' + data.description + '</p>');
                 $('#status h4:last').after('<p class="card-text">' + done + '</p>');
                 $('#created h4:last').after('<p class="card-text">' + data.created + '</p>');
+                $('#author h4:last').after('<p class="card-text">' + data.user.name + '</p>');
             }).fail(function (err) {
                 console.log(err);
             });
@@ -76,6 +82,9 @@
     <div class="card-header" id="pageHeader" style="text-align: center">
         <h3></h3>
     </div>
+    <div class="card-body" id="category">
+        <h4 class="card-title">Категория</h4>
+    </div>
     <div class="card-body" id="description">
         <h4 class="card-title">Описание</h4>
     </div>
@@ -84,6 +93,9 @@
     </div>
     <div class="card-body" id="created">
         <h4 class="card-title">Дата создания</h4>
+    </div>
+    <div class="card-body" id="author">
+        <h4 class="card-title">Автор</h4>
     </div>
     <div class="card-body" id="buttons">
         <h4 class="card-title">Действия</h4>

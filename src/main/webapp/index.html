@@ -45,9 +45,13 @@
                 var done;
                 for (var item of data) {
                     done = item.done ? 'Выполнено' : 'Не выполнено';
+                    var category = '';
+                    for (var c of item.categories) {
+                        category += c.name + "<br>";
+                    }
                     $('#items tr:last').after('<tr><td><a href=' + '/todo/item/description.html?id=' + item.id + '>'
-                        + item.name + '</a></td><td>' + item.created + '</td><td>' + done + '</td><td>' + item.user.name
-                        + '</td></tr>');
+                        + item.name + '</a></td><td>' + category + '</td><td>' + item.created + '</td><td>' + done +
+                        '</td><td>' + item.user.name + '</td></tr>');
                 }
             }).fail(function (err) {
                 console.log(err);
@@ -86,6 +90,7 @@
         <thead>
         <tr>
             <th>Имя</th>
+            <th>Категория</th>
             <th>Дата создания</th>
             <th>Состояние</th>
             <th>Автор</th>

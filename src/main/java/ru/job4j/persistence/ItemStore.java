@@ -34,27 +34,34 @@ public class ItemStore extends AbstractStore<Item> {
 
     @Override
     public List<Item> findAll() {
-        return tx(
-                session -> session.createQuery("from Item ").list()
+        return this.tx(
+                session -> session.createQuery("select distinct i from Item i inner join fetch i.categories c")
+                        .list()
         );
     }
 
     public List<Item> findNewItems() {
         return this.tx(
-                session -> session.createQuery("from Item where created >= date_trunc('DAY', current_date)").list()
+                session -> session
+                        .createQuery("select distinct i from Item i inner join fetch i.categories c " +
+                                "where i.created >= date_trunc('DAY', current_date)").list()
         );
     }
 
     public List<Item> findCompletedItems() {
         return this.tx(
-                session -> session.createQuery("from Item where done = true").list()
+                session -> session.createQuery("select distinct i from Item i inner join fetch i.categories c " +
+                        "where i. done = true").list()
         );
     }
 
     @Override
     public Item findById(int id) {
         return this.tx(
-                session -> session.get(Item.class, id)
+                session -> session.createQuery("select distinct i from Item i inner join fetch i.categories c " +
+                                "where i.id = :iid", Item.class)
+                        .setParameter("iid", id)
+                        .uniqueResult()
         );
     }
 

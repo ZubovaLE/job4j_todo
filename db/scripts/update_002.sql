@@ -6,8 +6,8 @@ CREATE TABLE IF NOT EXISTS categories
 
 CREATE TABLE IF NOT EXISTS items_categories
 (
-    category_id INTEGER NOT NULL REFERENCES categories (id),
-    items_id    INTEGER NOT NULL REFERENCES items (id)
+    item_id       INTEGER NOT NULL REFERENCES items (id),
+    categories_id INTEGER NOT NULL REFERENCES categories (id)
 );
 
 INSERT INTO categories(name)

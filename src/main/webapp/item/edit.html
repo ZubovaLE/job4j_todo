@@ -32,39 +32,38 @@
             var id = window.location.href.split("=")[1];
             var pageHeader;
             var buttonLabel;
-            if (parseInt(id) === 0) {
-                pageHeader = 'Создать задание';
-                buttonLabel = "Создать";
-                $.ajax({
-                    type: 'GET',
-                    url: 'http://localhost:8080/todo/category.do',
-                    dataType: 'json'
-                }).done(function (data) {
-                    for (var category of data) {
-                        var name = category.name;
-                        $('#category:last').append('<option value=' + name + '>' + name + '</option>');
-                    }
-                    $('#category').multiselect();
-                }).fail(function (err) {
-                    console.log(err);
-                });
-            } else {
-                pageHeader = 'Редактировать задание';
-                buttonLabel = "Редактировать";
-                $.ajax({
-                    type: 'GET',
-                    url: 'http://localhost:8080/todo/description.do?id=' + id,
-                    dataType: 'json'
-                }).done(function (data) {
-                    $('#name').val(data.name);
-                    $('#description').val(data.description);
-                }).fail(function (err) {
-                    console.log(err);
-                });
-            }
-            $('#pageHeader h3:last').append(pageHeader);
-            $('#itemInfo div:last').after('<button type="submit" class="btn btn-primary" onclick="return validate()">' +
-                buttonLabel + '</button>');
+            $.ajax({
+                type: 'GET',
+                url: 'http://localhost:8080/todo/category.do',
+                dataType: 'json'
+            }).done(function (data) {
+                for (var category of data) {
+                    $('#category:last').append('<option value=' + category.id + '>' + category.name + '</option>');
+                }
+                $('#category').multiselect();
+                if (parseInt(id) === 0) {
+                    pageHeader = 'Создать задание';
+                    buttonLabel = "Создать";
+                } else {
+                    pageHeader = 'Редактировать задание';
+                    buttonLabel = "Редактировать";
+                    $.ajax({
+                        type: 'GET',
+                        url: 'http://localhost:8080/todo/description.do?id=' + id,
+                        dataType: 'json'
+                    }).done(function (data) {
+                        $('#name').val(data.name);
+                        $('#description').val(data.description);
+                    }).fail(function (err) {
+                        console.log(err);
+                    });
+                }
+                $('#pageHeader h3:last').append(pageHeader);
+                $('#itemInfo div:last').after('<button type="submit" class="btn btn-primary" onclick="return validate()">' +
+                    buttonLabel + '</button>');
+            }).fail(function (err) {
+                console.log(err);
+            });
         })
 
         function validate() {

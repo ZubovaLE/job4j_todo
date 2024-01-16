@@ -42,10 +42,6 @@ public class Item {
         this.categories.add(category);
     }
 
-    public void removeCategory(Category category) {
-        this.categories.remove(category);
-    }
-
     public Item(int id, String name, String description, Timestamp created, boolean done, User user) {
         this.id = id;
         this.name = name;
