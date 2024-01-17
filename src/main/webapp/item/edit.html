@@ -37,13 +37,14 @@
                 url: 'http://localhost:8080/todo/category.do',
                 dataType: 'json'
             }).done(function (data) {
-                for (var category of data) {
-                    $('#category:last').append('<option value=' + category.id + '>' + category.name + '</option>');
-                }
-                $('#category').multiselect();
+                var categories = data;
                 if (parseInt(id) === 0) {
                     pageHeader = 'Создать задание';
                     buttonLabel = "Создать";
+                    for (var category of data) {
+                        $('#category:last').append('<option value=' + category.id + '>' + category.name + '</option>');
+                    }
+                    $('#category').multiselect();
                 } else {
                     pageHeader = 'Редактировать задание';
                     buttonLabel = "Редактировать";
@@ -54,12 +55,21 @@
                     }).done(function (data) {
                         $('#name').val(data.name);
                         $('#description').val(data.description);
+                        var itemCategories = data.categories;
+                        for (var c of categories) {
+                            if (itemCategories.some(someCategory => someCategory.id === c.id)) {
+                                $('#category:last').append('<option value=' + c.id + ' selected >' + c.name + '</option>');
+                            } else {
+                                $('#category:last').append('<option value=' + c.id + '>' + c.name + '</option>');
+                            }
+                        }
+                        $('#category').multiselect();
                     }).fail(function (err) {
                         console.log(err);
                     });
                 }
                 $('#pageHeader h3:last').append(pageHeader);
-                $('#itemInfo div:last').after('<button type="submit" class="btn btn-primary" onclick="return validate()">' +
+                $('#itemInfo div:last').after('<br><button type="submit" class="btn btn-primary" onclick="return validate()">' +
                     buttonLabel + '</button>');
             }).fail(function (err) {
                 console.log(err);

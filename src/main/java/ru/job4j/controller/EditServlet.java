@@ -27,14 +27,14 @@ public class EditServlet extends HttpServlet {
         String[] categoriesId = req.getParameterValues("categories");
         int id = Integer.parseInt(req.getParameter("id"));
         if (id != 0) {
-            Set<Category> categories = new HashSet<>();
+            Set<Category> itemCategories = new HashSet<>();
             for (String categoryId : categoriesId) {
-                categories.add(categoryService.findById(Integer.parseInt(categoryId)));
+                itemCategories.add(categoryService.findById(Integer.parseInt(categoryId)));
             }
             Item itemForUpdating = toDoService.findById(id);
             itemForUpdating.setName(name);
             itemForUpdating.setDescription(description);
-            itemForUpdating.setCategories(categories);
+            itemForUpdating.setCategories(itemCategories);
             toDoService.update(id, itemForUpdating);
         } else {
             User user = (User) req.getSession().getAttribute("user");
