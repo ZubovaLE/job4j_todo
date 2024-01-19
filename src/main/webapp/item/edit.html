@@ -77,7 +77,7 @@
         })
 
         function validate() {
-            if ($('#name').val() === '' || $('#description').val() === '') {
+            if ($('#name').val() === '' || $('#description').val() === '' || $('#category option:selected').length < 1) {
                 alert('Заполните все поля!');
                 return false;
             } else {

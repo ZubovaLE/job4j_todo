@@ -7,8 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -27,7 +27,8 @@ public class Item {
     private String description;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd.MM.yyyy HH:mm")
-    private Timestamp created;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date created = new Date(System.currentTimeMillis());
 
     private boolean done;
 
@@ -42,11 +43,10 @@ public class Item {
         this.categories.add(category);
     }
 
-    public Item(int id, String name, String description, Timestamp created, boolean done, User user) {
+    public Item(int id, String name, String description, boolean done, User user) {
         this.id = id;
         this.name = name;
         this.description = description;
-        this.created = created;
         this.done = done;
         this.user = user;
     }

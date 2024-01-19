@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -38,7 +37,7 @@ public class EditServlet extends HttpServlet {
             toDoService.update(id, itemForUpdating);
         } else {
             User user = (User) req.getSession().getAttribute("user");
-            Item item = new Item(0, name, description, new Timestamp(System.currentTimeMillis()), false, user);
+            Item item = new Item(0, name, description, false, user);
             for (String categoryId : categoriesId) {
                 item.addCategory(categoryService.findById(Integer.parseInt(categoryId)));
             }
